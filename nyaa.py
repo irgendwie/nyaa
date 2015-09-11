@@ -4,7 +4,7 @@ import re
 from termcolor import cprint
 import signal
 from subprocess import call
-from sys import exit
+from sys import exit,argv
 from os import devnull
 import constants
 
@@ -15,7 +15,10 @@ signal.signal(signal.SIGINT, signal_handler)
 # 1. #Seeders - 2. #Leechers - 3. #Downloads - 4. Size - 5. Additional
 rss_regex = re.compile("(\d+) seeder\(s\), (\d+) leecher\(s\), (\d+) download\(s\) - (\d+(?:\.\d+)? (?:KiB|MiB|GiB))(.*)")
 
-search_query = input("Which Anime are you looking for?\n>> ")
+if len(argv) > 1:
+    search_query = ' '.join(argv[1:])
+else:
+    search_query = input("Which Anime are you looking for?\n>> ")
 search_url = constants.URL + "&cats=" + constants.CATS_ANIME_ENGLISH_TRANSLATED + "&filter=" + constants.FILTER_NONE + "&order=" + constants.ORDER_DESCENDING + "&sort=" + constants.SORT_SEEDERS + "&term=" + search_query
 search_result = feedparser.parse(search_url)
 
